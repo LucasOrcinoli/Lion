@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Portfolio Artístico</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            background-color: #0a0a0a;
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+
+        /* Navegación */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 30px 60px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            background: linear-gradient(to bottom, rgba(10,10,10,0.95) 0%, rgba(10,10,10,0) 100%);
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 300;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 40px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 14px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            transition: opacity 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            opacity: 0.6;
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .hero-image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.7;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            padding: 0 20px;
+        }
+
+        .hero-title {
+            font-size: 80px;
+            font-weight: 300;
+            letter-spacing: 8px;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            animation: fadeInUp 1.2s ease;
+        }
+
+        .hero-subtitle {
+            font-size: 20px;
+            font-weight: 300;
+            letter-spacing: 4px;
+            opacity: 0.8;
+            animation: fadeInUp 1.4s ease;
+        }
+
+        /* About Section */
+        .about {
+            padding: 150px 60px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            font-size: 50px;
+            font-weight: 300;
+            letter-spacing: 4px;
+            margin-bottom: 60px;
+            text-transform: uppercase;
+            text-align: center;
+        }
+
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+            align-items: center;
+        }
+
+        .about-image {
+            width: 100%;
+            height: 500px;
+            object-fit: cover;
+            border-radius: 2px;
+        }
+
+        .about-text {
+            font-size: 18px;
+            line-height: 1.8;
+            font-weight: 300;
+            opacity: 0.9;
+        }
+
+        .about-text p {
+            margin-bottom: 20px;
+        }
+
+        /* Gallery Section */
+        .gallery {
+            padding: 100px 60px;
+            background-color: #111111;
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 30px;
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+
+        .gallery-item {
+            position: relative;
+            overflow: hidden;
+            aspect-ratio: 4/3;
+            cursor: pointer;
+            border-radius: 2px;
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s ease, opacity 0.3s ease;
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.05);
+            opacity: 0.8;
+        }
+
+        .gallery-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 30px;
+            background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0) 100%);
+            transform: translateY(100%);
+            transition: transform 0.4s ease;
+        }
+
+        .gallery-item:hover .gallery-overlay {
+            transform: translateY(0);
+        }
+
+        .gallery-title {
+            font-size: 22px;
+            font-weight: 400;
+            letter-spacing: 2px;
+            margin-bottom: 8px;
+        }
+
+        .gallery-description {
+            font-size: 14px;
+            opacity: 0.8;
+            font-weight: 300;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.95);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            max-width: 90%;
+            max-height: 90%;
+            position: relative;
+        }
+
+        .modal-image {
+            max-width: 100%;
+            max-height: 90vh;
+            object-fit: contain;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: -50px;
+            right: 0;
+            font-size: 40px;
+            color: white;
+            cursor: pointer;
+            background: none;
+            border: none;
+            padding: 10px;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal-close:hover {
+            opacity: 0.6;
+        }
+
+        .modal-info {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .modal-title {
+            font-size: 28px;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+        }
+
+        .modal-description {
+            font-size: 16px;
+            opacity: 0.8;
+        }
+
+        /* Contact Section */
+        .contact {
+            padding: 150px 60px;
+            text-align: center;
+        }
+
+        .contact-info {
+            font-size: 24px;
+            letter-spacing: 2px;
+            margin-top: 40px;
+            font-weight: 300;
+        }
+
+        .contact-info a {
+            color: #ffffff;
+            text-decoration: none;
+            border-bottom: 1px solid #ffffff;
+            transition: opacity 0.3s ease;
+        }
+
+        .contact-info a:hover {
+            opacity: 0.6;
+        }
+
+        /* Footer */
+        footer {
+            padding: 60px;
+            text-align: center;
+            font-size: 12px;
+            letter-spacing: 2px;
+            opacity: 0.6;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            nav {
+                padding: 20px 30px;
+            }
+
+            .logo {
+                font-size: 18px;
+            }
+
+            .nav-links {
+                gap: 20px;
+            }
+
+            .nav-links a {
+                font-size: 11px;
+            }
+
+            .hero-title {
+                font-size: 40px;
+                letter-spacing: 4px;
+            }
+
+            .hero-subtitle {
+                font-size: 16px;
+            }
+
+            .about, .gallery, .contact {
+                padding: 80px 30px;
+            }
+
+            .section-title {
+                font-size: 35px;
+            }
+
+            .about-content {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+
+            .about-image {
+                height: 400px;
+            }
+
+            .gallery-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .modal-content {
+                max-width: 95%;
+            }
+
+            .modal-close {
+                top: -40px;
+                font-size: 30px;
+            }
+        }
+
+        /* Smooth Scroll */
+        html {
+            scroll-behavior: smooth;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navegación -->
+    <nav>
+        <div class="logo">Lion</div>
+        <ul class="nav-links">
+            <li><a href="#home">Inicio</a></li>
+            <li><a href="#about">Sobre Mí</a></li>
+            <li><a href="#gallery">Galería</a></li>
+            <li><a href="#contact">Contacto</a></li>
+        </ul>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <img src="https://images.unsplash.com/photo-1561214115-f2f134cc4912?w=1600&q=80" alt="Hero" class="hero-image">
+        <div class="hero-content">
+            <h1 class="hero-title">Artista Visual</h1>
+            <p class="hero-subtitle">Explorando la intersección entre arte y realidad</p>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="about">
+        <h2 class="section-title">Sobre Mí</h2>
+        <div class="about-content">
+            <img src="https://images.unsplash.com/photo-1513364776144-60967b0f800f?w=800&q=80" alt="Artista" class="about-image">
+            <div class="about-text">
+                <p>
+                    Soy un artista interdisciplinar con una amplia trayectoria en el mundo del arte contemporáneo. 
+                    Mi trabajo ha sido reconocido tanto a nivel nacional como internacional.
+                </p>
+                <p>
+                    Mi obra se sumerge en un profundo diálogo que explora las interacciones entre la tradición 
+                    y la contemporaneidad, utilizando diversos medios y técnicas para crear experiencias visuales únicas.
+                </p>
+                <p>
+                    A través de mi trabajo, busco establecer conexiones significativas entre el espectador y la obra, 
+                    invitando a la reflexión sobre temas universales desde una perspectiva personal e innovadora.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery Section -->
+    <section id="gallery" class="gallery">
+        <h2 class="section-title">Obras Recientes</h2>
+        <div class="gallery-grid">
+            <div class="gallery-item" onclick="openModal(0)">
+                <img src="https://images.unsplash.com/photo-1547891654-e66ed7ebb968?w=800&q=80" alt="Obra 1">
+                <div class="gallery-overlay">
+                    <div class="gallery-title">Metamorfosis I</div>
+                    <div class="gallery-description">Instalación • 2024</div>
+                </div>
+            </div>
+
+            <div class="gallery-item" onclick="openModal(1)">
+                <img src="https://images.unsplash.com/photo-1549887534-1541e9326642?w=800&q=80" alt="Obra 2">
+                <div class="gallery-overlay">
+                    <div class="gallery-title">Diálogos Silenciosos</div>
+                    <div class="gallery-description">Escultura • 2024</div>
+                </div>
+            </div>
+
+            <div class="gallery-item" onclick="openModal(2)">
+                <img src="https://images.unsplash.com/photo-1536924940846-227afb31e2a5?w=800&q=80" alt="Obra 3">
+                <div class="gallery-overlay">
+                    <div class="gallery-title">Resonancias</div>
+                    <div class="gallery-description">Pintura • 2023</div>
+                </div>
+            </div>
+
+            <div class="gallery-item" onclick="openModal(3)">
+                <img src="https://images.unsplash.com/photo-1574522267621-81e7c835e1e0?w=800&q=80" alt="Obra 4">
+                <div class="gallery-overlay">
+                    <div class="gallery-title">Fragmentos de Luz</div>
+                    <div class="gallery-description">Fotografía • 2023</div>
+                </div>
+            </div>
+
+            <div class="gallery-item" onclick="openModal(4)">
+                <img src="https://images.unsplash.com/photo-1578926314433-e2789279f4aa?w=800&q=80" alt="Obra 5">
+                <div class="gallery-overlay">
+                    <div class="gallery-title">Horizontes Urbanos</div>
+                    <div class="gallery-description">Técnica Mixta • 2023</div>
+                </div>
+            </div>
+
+            <div class="gallery-item" onclick="openModal(5)">
+                <img src="https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?w=800&q=80" alt="Obra 6">
+                <div class="gallery-overlay">
+                    <div class="gallery-title">Texturas del Tiempo</div>
+                    <div class="gallery-description">Escultura • 2022</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact">
+        <h2 class="section-title">Contacto</h2>
+        <div class="contact-info">
+            <p>¿Interesado en mi trabajo?</p>
+            <p style="margin-top: 20px;">
+                <a href="mailto:tu@email.com">lionliongraff@gmail.com</a>
+            </p>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2024 Tu Nombre. Todos los derechos reservados.</p>
+    </footer>
+
+    <!-- Modal -->
+    <div class="modal" id="modal" onclick="closeModal(event)">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal(event)">&times;</button>
+            <img id="modal-image" class="modal-image" src="" alt="">
+            <div class="modal-info">
+                <div class="modal-title" id="modal-title"></div>
+                <div class="modal-description" id="modal-description"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const galleryData = [
+            {
+                img: "https://images.unsplash.com/photo-1547891654-e66ed7ebb968?w=1600&q=80",
+                title: "Metamorfosis I",
+                description: "Instalación • 2024 • Exploración de transformación y cambio"
+            },
+            {
+                img: "https://images.unsplash.com/photo-1549887534-1541e9326642?w=1600&q=80",
+                title: "Diálogos Silenciosos",
+                description: "Escultura • 2024 • Conversaciones entre formas y espacios"
+            },
+            {
+                img: "https://images.unsplash.com/photo-1536924940846-227afb31e2a5?w=1600&q=80",
+                title: "Resonancias",
+                description: "Pintura • 2023 • Vibraciones cromáticas y emocionales"
+            },
+            {
+                img: "https://images.unsplash.com/photo-1574522267621-81e7c835e1e0?w=1600&q=80",
+                title: "Fragmentos de Luz",
+                description: "Fotografía • 2023 • Capturando momentos efímeros"
+            },
+            {
+                img: "https://images.unsplash.com/photo-1578926314433-e2789279f4aa?w=1600&q=80",
+                title: "Horizontes Urbanos",
+                description: "Técnica Mixta • 2023 • La ciudad como lienzo"
+            },
+            {
+                img: "https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?w=1600&q=80",
+                title: "Texturas del Tiempo",
+                description: "Escultura • 2022 • Materialización del paso temporal"
+            }
+        ];
+
+        function openModal(index) {
+            const modal = document.getElementById('modal');
+            const modalImage = document.getElementById('modal-image');
+            const modalTitle = document.getElementById('modal-title');
+            const modalDescription = document.getElementById('modal-description');
+
+            modalImage.src = galleryData[index].img;
+            modalTitle.textContent = galleryData[index].title;
+            modalDescription.textContent = galleryData[index].description;
+            
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal(event) {
+            if (event.target.id === 'modal' || event.target.className === 'modal-close') {
+                const modal = document.getElementById('modal');
+                modal.classList.remove('active');
+                document.body.style.overflow = 'auto';
+            }
+        }
+
+        // Cerrar modal con tecla ESC
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                const modal = document.getElementById('modal');
+                modal.classList.remove('active');
+                document.body.style.overflow = 'auto';
+            }
+        });
+    </script>
+</body>
+</html>
