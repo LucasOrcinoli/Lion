@@ -38,6 +38,12 @@
             text-transform: uppercase;
         }
 
+        .nav-center {
+            display: flex;
+            align-items: center;
+            gap: 40px;
+        }
+
         .nav-links {
             display: flex;
             gap: 40px;
@@ -55,6 +61,33 @@
 
         .nav-links a:hover {
             opacity: 0.6;
+        }
+
+        .language-selector {
+            display: flex;
+            gap: 15px;
+            padding-left: 40px;
+            border-left: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .lang-btn {
+            background: none;
+            border: none;
+            color: #ffffff;
+            font-size: 12px;
+            letter-spacing: 2px;
+            cursor: pointer;
+            padding: 5px 10px;
+            transition: opacity 0.3s ease;
+            text-transform: uppercase;
+        }
+
+        .lang-btn:hover {
+            opacity: 0.6;
+        }
+
+        .lang-btn.active {
+            border-bottom: 1px solid #ffffff;
         }
 
         /* Hero Section */
@@ -333,12 +366,25 @@
                 font-size: 18px;
             }
 
+            .nav-center {
+                flex-direction: column;
+                gap: 15px;
+                align-items: flex-start;
+            }
+
             .nav-links {
                 gap: 20px;
             }
 
             .nav-links a {
                 font-size: 11px;
+            }
+
+            .language-selector {
+                padding-left: 0;
+                border-left: none;
+                padding-top: 10px;
+                border-top: 1px solid rgba(255, 255, 255, 0.2);
             }
 
             .hero-title {
@@ -392,38 +438,46 @@
     <!-- Navegación -->
     <nav>
         <div class="logo">Tu Nombre</div>
-        <ul class="nav-links">
-            <li><a href="#home">Inicio</a></li>
-            <li><a href="#about">Sobre Mí</a></li>
-            <li><a href="#gallery">Galería</a></li>
-            <li><a href="#contact">Contacto</a></li>
-        </ul>
+        <div class="nav-center">
+            <ul class="nav-links">
+                <li><a href="#home" data-i18n="nav_home">Inicio</a></li>
+                <li><a href="#about" data-i18n="nav_about">Sobre Mí</a></li>
+                <li><a href="#gallery" data-i18n="nav_gallery">Galería</a></li>
+                <li><a href="#contact" data-i18n="nav_contact">Contacto</a></li>
+            </ul>
+            <div class="language-selector">
+                <button class="lang-btn active" onclick="changeLanguage('es')">ES</button>
+                <button class="lang-btn" onclick="changeLanguage('en')">EN</button>
+                <button class="lang-btn" onclick="changeLanguage('fr')">FR</button>
+                <button class="lang-btn" onclick="changeLanguage('pt')">PT</button>
+            </div>
+        </div>
     </nav>
 
     <!-- Hero Section -->
     <section id="home" class="hero">
         <img src="lion8.jpg" alt="Hero" class="hero-image">
         <div class="hero-content">
-            <h1 class="hero-title">Artista AnalDream</h1>
-            <p class="hero-subtitle">Explorando la intersección entre arte y realidad</p>
+            <h1 class="hero-title" data-i18n="hero_title">Artista AnalDream</h1>
+            <p class="hero-subtitle" data-i18n="hero_subtitle">Explorando la intersección entre arte y realidad</p>
         </div>
     </section>
 
     <!-- About Section -->
     <section id="about" class="about">
-        <h2 class="section-title">Sobre Mí</h2>
+        <h2 class="section-title" data-i18n="about_title">Sobre Mí</h2>
         <div class="about-content">
             <img src="lion11.jpg" alt="Artista" class="about-image">
             <div class="about-text">
-                <p>
+                <p data-i18n="about_p1">
                     Soy un artista muy insurrecto birmano. 
                     Mi trabajo es tirando a vietnamita.
                 </p>
-                <p>
+                <p data-i18n="about_p2">
                     Mi obra se sumerge en un profundo chienchuchu 
                     y la contemporaneidad, utilizando diversos medios y técnicas.
                 </p>
-                <p>
+                <p data-i18n="about_p3">
                     A través de mi trabajo, busco establecer conexiones significativas entre el espectador y la obra, 
                     invitando a la reflexión sobre temas universales desde una perspectiva personal e innovadora.
                 </p>
@@ -433,7 +487,7 @@
 
     <!-- Gallery Section -->
     <section id="gallery" class="gallery">
-        <h2 class="section-title">Obras Recientes</h2>
+        <h2 class="section-title" data-i18n="gallery_title">Obras Recientes</h2>
         <div class="gallery-grid">
             <div class="gallery-item" onclick="openModal(0)">
                 <img src="lion3.jpg" alt="Obra 1">
@@ -535,18 +589,18 @@
 
     <!-- Contact Section -->
     <section id="contact" class="contact">
-        <h2 class="section-title">Contacto</h2>
+        <h2 class="section-title" data-i18n="contact_title">Contacto</h2>
         <div class="contact-info">
-            <p>¿Interesado en mi trabajo?</p>
+            <p data-i18n="contact_text">¿Interesado en mi trabajo?</p>
             <p style="margin-top: 20px;">
-                <a href="mailto:tu@email.com">tu@email.com</a>
+                <a href="mailto:lionliongraff@gmail.com">lionliongraff@gmail.com</a>
             </p>
         </div>
     </section>
 
     <!-- Footer -->
     <footer>
-        <p>&copy; 2025 by cousin. Todos los derechos reservados.</p>
+        <p data-i18n="footer_text">&copy; 2025 by cousin. Todos los derechos reservados.</p>
     </footer>
 
     <!-- Modal -->
@@ -562,6 +616,108 @@
     </div>
 
     <script>
+        // Traducciones
+        const translations = {
+            es: {
+                nav_home: "Inicio",
+                nav_about: "Sobre Mí",
+                nav_gallery: "Galería",
+                nav_contact: "Contacto",
+                hero_title: "Artista AnalDream",
+                hero_subtitle: "Explorando la intersección entre arte y realidad",
+                about_title: "Sobre Mí",
+                about_p1: "Soy un artista muy insurrecto birmano. Mi trabajo es tirando a vietnamita.",
+                about_p2: "Mi obra se sumerge en un profundo chienchuchu y la contemporaneidad, utilizando diversos medios y técnicas.",
+                about_p3: "A través de mi trabajo, busco establecer conexiones significativas entre el espectador y la obra, invitando a la reflexión sobre temas universales desde una perspectiva personal e innovadora.",
+                gallery_title: "Obras Recientes",
+                contact_title: "Contacto",
+                contact_text: "¿Interesado en mi trabajo?",
+                footer_text: "© 2025 by cousin. Todos los derechos reservados."
+            },
+            en: {
+                nav_home: "Home",
+                nav_about: "About",
+                nav_gallery: "Gallery",
+                nav_contact: "Contact",
+                hero_title: "AnalDream Artist",
+                hero_subtitle: "Exploring the intersection between art and reality",
+                about_title: "About Me",
+                about_p1: "I am a very insurrectionary Burmese artist. My work leans towards Vietnamese.",
+                about_p2: "My work immerses itself in a deep chienchuchu and contemporaneity, using various media and techniques.",
+                about_p3: "Through my work, I seek to establish meaningful connections between the viewer and the artwork, inviting reflection on universal themes from a personal and innovative perspective.",
+                gallery_title: "Recent Works",
+                contact_title: "Contact",
+                contact_text: "Interested in my work?",
+                footer_text: "© 2025 by cousin. All rights reserved."
+            },
+            fr: {
+                nav_home: "Accueil",
+                nav_about: "À Propos",
+                nav_gallery: "Galerie",
+                nav_contact: "Contact",
+                hero_title: "Artiste AnalDream",
+                hero_subtitle: "Explorer l'intersection entre l'art et la réalité",
+                about_title: "À Propos de Moi",
+                about_p1: "Je suis un artiste birman très insurrectionnel. Mon travail est plutôt vietnamien.",
+                about_p2: "Mon œuvre s'immerge dans un profond chienchuchu et la contemporanéité, utilisant divers médias et techniques.",
+                about_p3: "À travers mon travail, je cherche à établir des connexions significatives entre le spectateur et l'œuvre, invitant à la réflexion sur des thèmes universels d'une perspective personnelle et innovante.",
+                gallery_title: "Œuvres Récentes",
+                contact_title: "Contact",
+                contact_text: "Intéressé par mon travail?",
+                footer_text: "© 2025 by cousin. Tous droits réservés."
+            },
+            pt: {
+                nav_home: "Início",
+                nav_about: "Sobre Mim",
+                nav_gallery: "Galeria",
+                nav_contact: "Contato",
+                hero_title: "Artista AnalDream",
+                hero_subtitle: "Explorando a interseção entre arte e realidade",
+                about_title: "Sobre Mim",
+                about_p1: "Sou um artista birmanês muito insurrecional. Meu trabalho tende ao vietnamita.",
+                about_p2: "Minha obra mergulha em um profundo chienchuchu e a contemporaneidade, utilizando diversos meios e técnicas.",
+                about_p3: "Através do meu trabalho, busco estabelecer conexões significativas entre o espectador e a obra, convidando à reflexão sobre temas universais a partir de uma perspectiva pessoal e inovadora.",
+                gallery_title: "Obras Recentes",
+                contact_title: "Contato",
+                contact_text: "Interessado no meu trabalho?",
+                footer_text: "© 2025 by cousin. Todos os direitos reservados."
+            }
+        };
+
+        let currentLang = 'es';
+
+        function changeLanguage(lang) {
+            currentLang = lang;
+            
+            // Actualizar botones activos
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+
+            // Actualizar todos los textos
+            document.querySelectorAll('[data-i18n]').forEach(element => {
+                const key = element.getAttribute('data-i18n');
+                if (translations[lang][key]) {
+                    element.textContent = translations[lang][key];
+                }
+            });
+
+            // Guardar preferencia
+            localStorage.setItem('preferredLanguage', lang);
+        }
+
+        // Cargar idioma guardado al iniciar
+        window.addEventListener('DOMContentLoaded', () => {
+            const savedLang = localStorage.getItem('preferredLanguage');
+            if (savedLang && translations[savedLang]) {
+                const langButton = document.querySelector(`.lang-btn[onclick="changeLanguage('${savedLang}')"]`);
+                if (langButton) {
+                    langButton.click();
+                }
+            }
+        });
+
         const galleryData = [
             {
                 img: "lion3.jpg",
